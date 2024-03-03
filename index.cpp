@@ -9,5 +9,6 @@ int main()
     cout<<"We are going to do a great project."<<endl;
     cout<<"Capstone Project"<<endl;
     cout<<"Jenish send Git-hub's username. "<<endl;
+    cout<<"Edited in origin(remote)"<<endl;
     return 0;
 }
