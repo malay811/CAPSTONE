@@ -7,5 +7,6 @@ int main()
     cout<<"No we can't do this."<<endl;
     cout<<"You are fooled"<<endl;
     cout<<"We are going to do a great project."<<endl;
+    cout<<"Capstone Project"<<endl;
     return 0;
 }
