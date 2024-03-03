@@ -8,5 +8,6 @@ int main()
     cout<<"You are fooled"<<endl;
     cout<<"We are going to do a great project."<<endl;
     cout<<"Capstone Project"<<endl;
+    cout<<"Jenish send Git-hub's username. "<<endl;
     return 0;
 }
