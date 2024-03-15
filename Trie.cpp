@@ -12,11 +12,22 @@ struct TrieNode {
 
 // Trie class
 class Trie {
-private:
-    TrieNode* root;
-
-public:
-    Trie() {
-        root = new TrieNode('\0');
+    private:
+        TrieNode* root;
+    
+    public:
+        Trie() {
+            root = new TrieNode('\0');
+        }
+    
+    void deleteTrie(TrieNode* node) {
+        if (node == nullptr) {
+            return;
+        }
+        for (TrieNode* child : node->children) {
+                deleteTrie(child);
+            }
+        delete node;
     }
+
 };
