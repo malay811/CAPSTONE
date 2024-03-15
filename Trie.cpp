@@ -29,5 +29,10 @@ class Trie {
             }
         delete node;
     }
+ // destructor
+ ~Trie() {
+        deleteTrie(root);
+    }
+
 
 };
