@@ -9,3 +9,14 @@ struct TrieNode {
 
     TrieNode(char ch) : character(ch), isWord(false), children(26, nullptr) {}
 };
+
+// Trie class
+class Trie {
+private:
+    TrieNode* root;
+
+public:
+    Trie() {
+        root = new TrieNode('\0');
+    }
+};
