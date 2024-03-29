@@ -3,12 +3,13 @@
 using namespace std;
 
 //funcation that read words from file and insert into trie.
-void readWordsFromFileToTrie(string filename, Trie &dictionary)
+void readWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use const keyword for not changing file name and  this '&' for avoid duplication. 
 {
     ifstream file(filename);
     // open the file with the name provided in the filename parameter for reading.
+
+     //Before proceeding, the code checks if the file was successfully opened. 
     if(file.is_open())
-    //Before proceeding, the code checks if the file was successfully opened. 
     {
         string word;
         while(getline(file,word))
