@@ -63,8 +63,23 @@ vector<string> Find_Suggestions(const string& word, const Trie& trie) const{
         }
     }
 
-
+    // Deletion of each alphabet one by one in input word.
+    for (int i=0; i<word.size(); i++){
+        string new_Word = word.substr(0,i) + word.substr(i+1);
+        if (trie.search(new_Word) || trie.search(convert_to_Lowercase(new_Word))){
+            suggestions.push_back(new_Word);
+        }
+    }
     
+    // Swapping of adjacent alphabets in input word.
+    for (int i=0; i<word.size()-1; i++) {
+        string new_Word = word.substr(0,i) + word[i+1] + word[i] + word.substr(i+2);
+        if (trie.search(new_Word) || trie.search(convert_to_Lowercase(new_Word))){
+            suggestions.push_back(new_Word);
+        }
+    }
+
+    return suggestions;
 }  
 
 };
