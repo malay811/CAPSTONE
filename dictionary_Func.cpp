@@ -1,6 +1,7 @@
 #include <iostream>
 #include<fstream>
 #include<string>
+#include<sstream>//for string stream
 using namespace std;
 
 //function that read words from file and insert into trie.
@@ -42,3 +43,31 @@ void WriteInToFile(const string &filename, const string &content)
         cout<<"Error to writing the content to file "<<filename <<endl; //error message for not opening file
     }
 }
+
+// Function to read the content of a text file
+string readTextFile(const string &filename)// const for avoid duplication and we don't want to modify the filename
+{
+    string content;//declare variable
+    
+    ifstream(filename);//opens the file specified by filename using an ifstream object named file.
+    
+    if(file.is_open()) //file successfully opened so return true
+    {
+        strinstream ss;
+        ss<<file.rdbf(); //return pointer to file's input buffer
+        
+        /*By this two line It creates a stringstream object named ss and uses 
+        the rdbuf() function of the file object to extract the entire file contents and store them in the stringstream*/
+        
+        content=ss.str();//By using str() assigns the content of the stringstream to the 'content variable'
+        
+        file.close();
+    }
+    
+    else{
+        cout<<"Error opening text file: " << filename << endl;
+    }
+    
+    return content;//return content string
+}
+
