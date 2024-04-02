@@ -1,6 +1,6 @@
 #include <iostream>
-#include<fstream>
-#include<string>
+#include<fstream>// for file-handling
+#include<string>// for string
 #include<sstream>//for string stream
 using namespace std;
 
