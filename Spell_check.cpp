@@ -6,64 +6,96 @@
 
 using namespace std ;
 
-string spelling_check(const string& text_file, const Trie& dictionary){
-    string correct_spelling;
-    stringstream temp_file(text_file);
+// this function will take the word one by one and input correct word in new file
+string spelling_check(const string &text_file, const Trie &dictionary){
+
+    string correct_spelling ;
+    stringstream temp_file(text_file) ;
     string spelling ;
 
+    // traverse through each word of the file 
     while( temp_file >> spelling ){
 
-        // if the last character is not alphabet than remove it 
-        char last_char = spelling[spelling.length() - 1] ;
-
-        string mark ;
-        if( ispunct(last_char) ){
-            mark = string(1,last_char) ;
+        // if the last character and/or first character is punctuation mark than removes it befire checking 
+        char last_char = spelling.back() ;
+        char first_char = spelling.front() ; 
+        
+        string mark_L,mark_F ;
+        
+        if(ispunct(last_char)){
+            mark_L = string(1, last_char) ;
             spelling.pop_back() ;
         }
 
-        string lowercase_spelling = toLowerCase(spelling) ;
-        
-        // if word is not present than suggest a word 
-        if( !dictionary.search(spelling) && !dictionary.search(lowercase_spelling) ){
-            vector<string> suggest_spelling = dictionary.suggestCorrections(spelling, dictionary);
+        if(ispunct(first_char)){
+            mark_F = string(1, first_char) ;
+            spelling.erase(0,1) ;
+        }
 
-            // if there is a suggestion for some wrong spelling 
+        // if word is not present than suggest a word
+        if( !dictionary.search(spelling) && !dictionary.search(convert_to_Lowercase(spelling)) ){
+
+            vector<string> suggest_spelling = dictionary.Find_Suggestions(convert_to_Lowercase(spelling), dictionary) ;
+
+            // if there is a suggestion for some wrong spelling
             if( !suggest_spelling.empty() ){
-                cout << "Spelling for this word : '" << spelling << mark << "' is wrong. Suggestions :" << endl;
 
-                for( int i=0 ; i<suggest_spelling.size() ; i++ ){
-                    
-                    // If first character is capital than also make suggested spelling's first char capital
-                    if( spelling[0] <= 'Z' && spelling[0] >= 'A' ){
-                        suggest_spelling[i] = (suggest_spelling[i])[0] + 32 ;
+                cout << endl << "--> The word '" << mark_F <<spelling << mark_L << "' is missplled.\nSuggestions for the misspelled word :" << endl ;
+
+                for(int i = 0; i < suggest_spelling.size(); i++){
+
+                    bool condition = 1 ; 
+                    for(int j = 0; j < spelling.length(); j++){
+                        if (!isupper(spelling[j]))
+                            condition = 0;
                     }
-                    
-                    cout << "(" << i+1 << ") " << suggest_spelling[i] << mark << endl ;
+
+                    // format the word according to the wrong word 
+                    if(condition){
+                        suggest_spelling[i]=convert_to_Uppercase(suggest_spelling[i]);
+                    }
+                    else if(isupper(spelling[0])){
+                        (suggest_spelling[i])[0]=toupper((suggest_spelling[i])[0]);
+                    }
+                    else{
+                        suggest_spelling[i]=convert_to_Lowercase(suggest_spelling[i]);
+                    }
+                    cout << "(" << i + 1 << ") " << mark_F << suggest_spelling[i] << mark_L << endl;
                 }
+            }
+            
+            if( !suggest_spelling.empty() ){
+                cout << "\nEnter the number of correct spelling (Type 0 to skip) : ";
 
-                cout << "Enter the number of correct spelling or type 0 to skip ";
-                int index ;
+                // take the index of right word
+                int index;
+                while( !suggest_spelling.empty() ){
+                    cin >> index;
 
-                while( 1 ){
-                    cin >> index ;
-
-                    if( index < 0 || index > suggest_spelling.size() ){
-                        cout << endl << "Please enter valid index " << endl ;
-                    }else{
+                    if(index < 0 || index > suggest_spelling.size()){
+                        cout << endl << "Please enter a valid index : " ;
+                    }
+                    else{
                         break;
                     }
                 }
 
-                if( index > 0 ){
-                    // Replace word 
-                    spelling = suggest_spelling[index-1] ;
+                if(index > 0){
+                    // Replace it with correct word 
+                    spelling = suggest_spelling[index - 1];
+                }
+            }else{
+                if( !dictionary.search(spelling) && !dictionary.search(convert_to_Lowercase(spelling)) ){
+                    cout << endl << "--> The word '" << mark_F <<spelling << mark_L << "' may be misspelled." << endl << endl ;
                 }
             }
+            
         }
-        // add punctuation mark at the end 
-        correct_spelling += spelling + mark + " " ;
-    }
-    return correct_spelling ;
-}
 
+        // add a punctuation mark at front and end 
+        correct_spelling += mark_F + spelling + mark_L + " " ;
+
+    }
+    
+    return correct_spelling ;
+}
