@@ -1,3 +1,10 @@
+#include <iostream>
+#include "Trie.cpp"
+#include "Spell_check.cpp"
+#include "dictionary_Fun.cpp"
+
+using namespace std;
+
 int main(){
     // Trie object
     Trie dictionary;
