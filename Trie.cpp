@@ -88,50 +88,72 @@ class Trie {
     }
 
 
-//Function to find the suggestions for missplled word. 
-vector<string> Find_Suggestions(const string& word, const Trie& trie) const{
+// Function to calculate the levenshtein distance(changes needed to convert one word into another word) between two words
+int Levenshtein_Distance(const string &Spell1, const string &Spell2) const{
+    int p = Spell1.length();
+    int q = Spell2.length();
 
-    vector<string> suggestions;
+    vector<vector<int>> matrix (p+1, vector<int>(q+1,0));
 
-    // "Different approches to find suggestions."
-
-    // Insertion of all alphabets one by one at each position in input word. 
-    for (int i=0; i<=word.size(); i++){
-        for (char ch='a'; ch<='z'; ch++){
-            string new_Word = word.substr(0,i) + ch + word.substr(i);
-            if (trie.search(new_Word) || trie.search(convert_to_Lowercase(new_Word))){
-                suggestions.push_back(new_Word);
+    // Algorithm which make the 2D-array to find the distance
+    for (int i=0; i<=p; i++){
+        for (int j=0; j<=q; j++){
+            if (i==0){
+                matrix[i][j] = j;
+            } 
+            else if (j==0){
+                matrix[i][j] = i;
+            } 
+            else if (Spell1[i-1] == Spell2[j-1]){
+                matrix[i][j] = matrix[i-1][j-1];
+            } 
+            else{
+                matrix[i][j] = 1 + min({matrix[i-1][j], matrix[i][j-1], matrix[i-1][j-1]});
             }
         }
     }
+    return matrix[p][q]; // last element of the matrix will be distance
+}
 
-    // Substitution of each alphabet in input word with all other alphabets.
-    for (int i=0; i<word.size(); i++){
-        for (char ch='a'; ch<='z'; ch++){
-            string new_Word = word.substr(0,i) + ch + word.substr(i+1);
-            if (ch != word[i]    &&     (trie.search(new_Word) || trie.search(convert_to_Lowercase(new_Word))) ){
-                suggestions.push_back(new_Word);
+
+// Function to find the suggestions for misspelled word
+vector<string> Find_Suggestions(const string &spell, int change) const{
+        vector<string> suggestions;
+
+        // calling Find_Suggestions_Helper function to get the all suggestions for misspelled word
+        Find_Suggestions_Helper(root, "", spell, change, suggestions);
+        return suggestions;
+    }
+
+
+// Helper function for finding suggestion recursively
+void Find_Suggestions_Helper(TrieNode *node, const string &dicWord, const string &spell, int change, vector<string> &suggestions) const{
+        
+        // will return when reach to the end of a branch in trie
+        if (node==nullptr){
+            return;
+            }
+
+        //size of the dictionary word should be less then or euqal to (input word + change), if not then return
+        if (dicWord.size() > spell.size()+change){
+            return;
+        }
+
+        if (node->isWord && dicWord.size() <= spell.size()+change){
+            // calling Levenshtein_Distance function to find the distance beetween input word and dictionary word
+            int distance = Levenshtein_Distance(dicWord, spell);
+            
+            // make dictionary word as suggestion if it met with the required change
+            if (distance == change){
+                suggestions.push_back(dicWord);
             }
         }
-    }
 
-    // Deletion of each alphabet one by one in input word.
-    for (int i=0; i<word.size(); i++){
-        string new_Word = word.substr(0,i) + word.substr(i+1);
-        if (trie.search(new_Word) || trie.search(convert_to_Lowercase(new_Word))){
-            suggestions.push_back(new_Word);
+        // Recursively calls itself for each child node of the current node, appending the corresponding character to dicWord.
+        // The recursion continues until all branches of the trie are traversed or until the length constraint is met.
+        for (char ch='a'; ch<='z'; ch++){
+            Find_Suggestions_Helper(node->children[ch-'a'], dicWord+ch, spell, change, suggestions);
         }
-    }
-    
-    // Swapping of adjacent alphabets in input word.
-    for (int i=0; i<word.size()-1; i++) {
-        string new_Word = word.substr(0,i) + word[i+1] + word[i] + word.substr(i+2);
-        if (trie.search(new_Word) || trie.search(convert_to_Lowercase(new_Word))){
-            suggestions.push_back(new_Word);
-        }
-    }
-
-    return suggestions;
-}  
+    }  
 
 };
