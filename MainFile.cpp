@@ -2,6 +2,10 @@
 #include "Trie.cpp"
 #include "Spell_check.cpp"
 #include "dictionary_Fun.cpp"
+#include <windows.h>
+HANDLE h=GetStdHandle(STD_OUTPUT_HANDLE);
+#define white SetConsoleTextAttribute(h,7);
+#define green SetConsoleTextAttribute(h,2);
 using namespace std;
 
 int main(){
@@ -24,7 +28,7 @@ int main(){
     // Write the corrected text into output file (Format will be same as input file)
     writeTextFile(output, correctedText);
 
-    cout << "Spell checking has been completed. Successfully!" << endl;
+    cout << "\nSpell checking has been completed. Successfully!" << endl;
     
 return 0 ;
 }
