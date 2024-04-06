@@ -28,7 +28,9 @@ int main(){
     // Write the corrected text into output file (Format will be same as input file)
     writeTextFile(output, correctedText);
 
+    green; //Text color turns into green
     cout << "\nSpell checking has been completed. Successfully!" << endl;
+    white; //Text color turns into white
     
 return 0 ;
 }
