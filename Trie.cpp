@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<string>
+#include<cctype>
 using namespace std;
 
 // TrieNode Structure
@@ -10,7 +14,7 @@ struct TrieNode {
     TrieNode(char ch) : character(ch), isWord(false), children(26, nullptr) {}
 };
 
-string convert_to_Lowercase(string str)
+string convert_to_Lowercase(string &str)
 {
     string lowerStr=str;
     transform(lowerStr.begin(),lowerStr.end(),lowerStr.begin(),::tolower);//included "algorithm" file for using this function
@@ -18,7 +22,7 @@ string convert_to_Lowercase(string str)
     return lowerStr;
 }
 
-string convert_to_Uppercase(string str)
+string convert_to_Uppercase(string &str)
 {
     string upperStr=str;
     transform(upperStr.begin(),upperStr.end(),upperStr.begin(),::toupper);//included "algorithm" file for using this function
@@ -37,7 +41,7 @@ class Trie {
         }
 
     //inserting a word
-    void insert(string word)
+    void insert(string &word)
     {
         TrieNode* node=root;
         for(char ch : word)// It iterates over each character 'ch' in the input word.
@@ -54,7 +58,7 @@ class Trie {
     }
 
     //searching a word
-    bool search(string word)
+    bool search(string &word)
     {
         TrieNode* node=root;
         for(char ch : word)
