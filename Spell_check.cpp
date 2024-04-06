@@ -2,74 +2,76 @@
 #include<string>
 #include<vector>
 #include<sstream>
+#include<cstring>
+#include<windows.h>
+
+HANDLE h=GetStdHandle(STD_OUTPUT_HANDLE);
+#define red SetConsoleTextAttribute(h,4);
+#define white SetConsoleTextAttribute(h,7);
+#define yellow SetConsoleTextAttribute(h,6);
+#define blue SetConsoleTextAttribute(h,1);
+#define green SetConsoleTextAttribute(h,2);
+#define cyan SetConsoleTextAttribute(h,11);
 
 using namespace std ;
 
 // this is a helper function for spelling check function 
-void spelling_check_helper( string&spelling , const Trie &dictionary , int threshold ){
+void spelling_check_helper( string&spelling , const Trie &dictionary , int change ){
 
-    // if the spelling is wrong then this part will execute 
-    if( !dictionary.search(spelling) && !dictionary.search(convert_to_Lowercase(spelling)) ){
+    // store the suggested spelling using Find_Suggestions function 
+    vector<string> suggest_spelling = dictionary.Find_Suggestions(convert_to_Lowercase(spelling) , change ) ;
 
-        // store the suggested spelling usin find_suggestions function 
-        vector<string> suggest_spelling = dictionary.Find_Suggestions(convert_to_Lowercase(spelling) , threshold ) ;
+    // if there exist suggestions for the misspelled word
+    if( !suggest_spelling.empty() ){
 
-        // if the there exist a suggestion for a misspelled word
-        if( !suggest_spelling.empty() ){
+        cout << endl ;
+        red cout << "--> The word '" << spelling << "' is missplled." << endl ; 
+        yellow cout << "Suggestions for the misspelled word :" << endl ; white
 
-            cout << endl << "--> The word '" << spelling << "' is missplled.\nSuggestions for the misspelled word :" << endl ;
+        for(int i = 0; i < suggest_spelling.size(); i++){
 
-            for(int i = 0; i < suggest_spelling.size(); i++){
-
-                bool condition = 1 ; 
-                for(int j = 0; j < spelling.length(); j++){
-                    if (!isupper(spelling[j]))
-                        condition = 0;
-                }
-
-                // format the word according to the wrong word 
-                if(condition){
-                    suggest_spelling[i]=convert_to_Uppercase(suggest_spelling[i]);
-                }
-                else if(isupper(spelling[0])){
-                    (suggest_spelling[i])[0]=toupper((suggest_spelling[i])[0]);
-                }
-                else{
-                    suggest_spelling[i]=convert_to_Lowercase(suggest_spelling[i]);
-                }
-                cout << "(" << i + 1 << ") " << suggest_spelling[i] << endl;
+            bool condition = 1 ; 
+            for(int j = 0; j < spelling.length(); j++){
+                if (!isupper(spelling[j]))
+                    condition = 0;
             }
+
+            // format the word according to the wrong word 
+            if(condition){
+                suggest_spelling[i]=convert_to_Uppercase(suggest_spelling[i]);
+            }
+            else if(isupper(spelling[0])){
+                (suggest_spelling[i])[0]=toupper((suggest_spelling[i])[0]);
+            }
+            else{
+                suggest_spelling[i]=convert_to_Lowercase(suggest_spelling[i]);
+            }
+            cout << "(" << i + 1 << ") " << suggest_spelling[i] << endl;
+        }
+    }
+
+    // if there is a suggestions for misspelled word
+    if( !suggest_spelling.empty() ){
+        blue cout << "\nEnter the number correspond to correct spelling " ;
+        cyan cout << "(Type 0 to skip and -1 for more suggestion) : "; white
+
+        // take the index of right word
+        int index ;
+        cin >> index ;    
+
+        // if index is -1 then call helpere function with increased value of threshold
+        if( index==-1 ){
+            spelling_check_helper( spelling , dictionary , ++change ) ;
+            index = 0 ;
         }
 
-        // if there is a suggestions for misspelled word
-        if( !suggest_spelling.empty() ){
-            cout << "\nEnter the number of correct spelling (Type 0 to skip ans -1 for more suggestion ) : ";
-
-            // take the index of right word
-            int index = 0 ;
-            cin >> index ;    
-
-            // if index is -1 then call helpere function with increased value of threshold
-            if( index==-1 ){
-                spelling_check_helper( spelling , dictionary , ++threshold ) ;
-                index = 0 ;
-            }
-
-            // if index is wrong then ask the user for correct index
-            if( index < -1 || index >suggest_spelling.size() ){
-                cout << "Enter valid index : " ;
-                cin >> index ;
-            }
-
-            if(index > 0  && index<=suggest_spelling.size() ){
-                // Replace the word with correct word 
-                spelling = suggest_spelling[index - 1] ;
-            }
-        }else{
-            // if there is no suggestions then call heper function with increasing threshold value
-            spelling_check_helper( spelling , dictionary , ++threshold ) ;
+        if(index > 0  && index<=suggest_spelling.size() ){
+            // Replace the word with correct word 
+            spelling = suggest_spelling[index - 1] ;
         }
-
+    }else{
+        // if there is no suggestions then call heper function with increasing threshold value
+        spelling_check_helper( spelling , dictionary , change++ ) ;
     }
 }
 
@@ -84,7 +86,6 @@ string spelling_check(const string &text_file, const Trie &dictionary){
     while( (getline(temp_file, line)) ){
         string spelling ;
         stringstream ss(line) ;
-
 
         // store the whitespaces present in the starting of line 
         bool flag1 = 0 ;
@@ -144,10 +145,15 @@ string spelling_check(const string &text_file, const Trie &dictionary){
             spelling.erase(spelling.length()-mark_L.length()) ;
 
             // start the threshold value from 1
-            int threshold = 1 ;
+            int change = 1 ;
 
-            // if word is not present than suggest a word
-            suggestion_helper( spelling , dictionary , threshold ) ;
+            // if the spelling is wrong then this part will execute 
+            if( !dictionary.search(spelling) && !dictionary.search(convert_to_Lowercase(spelling)) ){
+
+                // if word is not present than suggest a word
+                spelling_check_helper( spelling , dictionary , change ) ;
+
+            }
 
             // add a punctuation mark at front and end 
             correct_spelling += mark_F + spelling + mark_L + white_space ;
