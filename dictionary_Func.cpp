@@ -1,15 +1,12 @@
 #include <iostream>
 #include<fstream>// for file-handling
 #include<string>// for string
-#include<sstream>//for string stream
 using namespace std;
-
 //function that read words from file and insert into trie.
-void readWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use const keyword for not changing file name and  this '&' for avoid duplication.(Pass by Reference)
+void insertWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use const keyword for not changing file name and  this '&' for avoid duplication.(Pass by Reference)
 {
     ifstream file(filename);
     // open the file with the name provided in the filename parameter for reading.
-
      //Before proceeding, the code checks if the file was successfully opened. 
     if(file.is_open())
     {
@@ -45,29 +42,21 @@ void WriteInToFile(const string &filename, const string &content)
 }
 
 // Function to read the content of a text file
-string readTextFile(const string &filename)// const for avoid duplication and we don't want to modify the filename
+string readFile(const string &filename)
 {
-    string content;//declare variable
-    
-    ifstream(filename);//opens the file specified by filename using an ifstream object named file.
-    
-    if(file.is_open()) //file successfully opened so return true
+    ifstream file(filename);
+    if (!file)
     {
-        strinstream ss;
-        ss<<file.rdbf(); //return pointer to file's input buffer
-        
-        /*By this two line It creates a stringstream object named ss and uses 
-        the rdbuf() function of the file object to extract the entire file contents and store them in the stringstream*/
-        
-        content=ss.str();//By using str() assigns the content of the stringstream to the 'content variable'
-        
-        file.close();
+        cout << "Error opening text file: " << filename << endl;
+        return "";
     }
-    
-    else{
-        cout<<"Error opening text file: " << filename << endl;
-    }
-    
-    return content;//return content string
-}
 
+    string content;
+    string line;
+    while (getline(file, line))
+    {
+        content += line + "\n";
+    }
+    file.close();
+    return content;
+}
