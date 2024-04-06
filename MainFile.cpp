@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Trie.cpp"
 #include "Spell_check.cpp"
-#include "dictionary_Fun.cpp"
+#include "file_handling.cpp"
 #include <windows.h>
 HANDLE h=GetStdHandle(STD_OUTPUT_HANDLE);
 #define white SetConsoleTextAttribute(h,7);
