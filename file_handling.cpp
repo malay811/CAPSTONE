@@ -1,9 +1,13 @@
 #include <iostream>
 #include<fstream>// for file-handling
 #include<string>// for string
+#include<windows.h>//for text-color
+HANDLE h=GetStdHandle(STD_OUTPUT_HANDLE);
+#define red  SetConsoleTextAttribute(h,4)
+#define white  SetConsoleTextAttribute(h,7)
 using namespace std;
 //function that read words from file and insert into trie.
-void insertWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use const keyword for not changing file name and  this '&' for avoid duplication.(Pass by Reference)
+void InsertWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use const keyword for not changing file name and  this '&' for avoid duplication.(Pass by Reference)
 {
     ifstream file(filename);
     // open the file with the name provided in the filename parameter for reading.
@@ -19,14 +23,18 @@ void insertWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use co
         
         file.close();//file close
     }
-    else{
+    else
+    {
+        red;
         cout << "Unable to open dictionary file: " << filename << ". Please ensure you have the necessary permissions to read the file." << endl;
+        white;
+        exit(1);
     }
 }
 
 
 //function to write content back into the file
-void WriteInToFile(const string &filename, const string &content)
+void writeTextFile(const string &filename, const string &content)
 // This funcation take 2 parameter first is filename and second is the content writing to the filename's file
 {
     ofstream file(filename);// This line create output file stream named file,and open filename's file to writing
@@ -36,18 +44,24 @@ void WriteInToFile(const string &filename, const string &content)
         file<<content;//write content into the file
         file.close();//close the file
     }
-    else{
+    else
+    {
+        red;
         cout<<"Error to writing the content to file "<<filename <<endl; //error message for not opening file
+        white;
+         exit(1);
     }
 }
 
 // Function to read the content of a text file
-string readFile(const string &filename)
+string readTextFile(const string &filename)
 {
     ifstream file(filename);
     if (!file)
     {
+        red;
         cout << "Error opening text file: " << filename << endl;
+        white;
         return "";
     }
 
