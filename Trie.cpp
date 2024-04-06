@@ -10,7 +10,7 @@ struct TrieNode {
     TrieNode(char ch) : character(ch), isWord(false), children(26, nullptr) {}
 };
 
-string toLowerCase(string str)
+string convert_to_Lowercase(string str)
 {
     string lowerStr=str;
     transform(lowerStr.begin(),lowerStr.end(),lowerStr.begin(),::tolower);//included "algorithm" file for using this function
@@ -18,7 +18,7 @@ string toLowerCase(string str)
     return lowerStr;
 }
 
-string toUpperCase(string str)
+string convert_to_Uppercase(string str)
 {
     string upperStr=str;
     transform(upperStr.begin(),upperStr.end(),upperStr.begin(),::toupper);//included "algorithm" file for using this function
