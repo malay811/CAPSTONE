@@ -1,10 +1,14 @@
 #include <iostream>
 #include<fstream>// for file-handling
 #include<string>// for string
+
+#include"Trie.cpp"
+
 #include<windows.h>//for text-color
 HANDLE h=GetStdHandle(STD_OUTPUT_HANDLE);
-#define red  SetConsoleTextAttribute(h,4)
-#define white  SetConsoleTextAttribute(h,7)
+#define red SetConsoleTextAttribute(h,4);
+#define white SetConsoleTextAttribute(h,7);
+
 using namespace std;
 //function that read words from file and insert into trie.
 void InsertWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use const keyword for not changing file name and  this '&' for avoid duplication.(Pass by Reference)
@@ -25,9 +29,7 @@ void InsertWordsFromFileToTrie(const string &filename, Trie &dictionary)//Use co
     }
     else
     {
-        red;
-        cout << "Unable to open dictionary file: " << filename << ". Please ensure you have the necessary permissions to read the file." << endl;
-        white;
+       red cout << "Unable to open dictionary file: " << filename << ". Please ensure you have the necessary permissions to read the file." << endl;white
         exit(1);
     }
 }
@@ -46,31 +48,23 @@ void writeTextFile(const string &filename, const string &content)
     }
     else
     {
-        red;
-        cout<<"Error to writing the content to file "<<filename <<endl; //error message for not opening file
-        white;
+        
+      red cout<<"Error to writing the content to file "<<filename <<endl; white //error message for not opening file
          exit(1);
     }
 }
 
 // Function to read the content of a text file
-string readTextFile(const string &filename)
-{
+string readTextFile(const string &filename) {
     ifstream file(filename);
-    if (!file)
-    {
-        red;
-        cout << "Error opening text file: " << filename << endl;
-        white;
-        return "";
+    if (!file.is_open()) {
+        red cout << "Error opening text file: " << filename << endl;white
+        exit(1);
     }
 
-    string content;
-    string line;
-    while (getline(file, line))
-    {
-        content += line + "\n";
-    }
+    stringstream buffer;
+    buffer << file.rdbuf();  // Read entire file into stringstream
     file.close();
-    return content;
+
+    return buffer.str();  // Convert stringstream to string and return
 }
