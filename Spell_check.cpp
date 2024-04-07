@@ -86,7 +86,7 @@ string spelling_check(const string &text_file, const Trie &dictionary){
 
             string lower_spell = convert_to_Lowercase(spelling) ;
             // if the spelling is wrong then this part will execute 
-            if( !dictionary.search(spelling) && !dictionary.search(lower_spell){
+            if( !dictionary.search(spelling) && !dictionary.search(lower_spell)){
                 // loop will iterate upto 15 change 
                 while( change<=15 ){
                     // store the suggested spelling using Find_Suggestions function 
