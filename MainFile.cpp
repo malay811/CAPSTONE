@@ -1,8 +1,9 @@
 #include <iostream>
-#include "Spell_check.cpp"
+
 #include <windows.h>
 #define green SetConsoleTextAttribute(h,2);
 using namespace std;
+#include "Spell_check.cpp"
 
 int main(){
     // Trie object
