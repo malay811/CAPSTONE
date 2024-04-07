@@ -1,9 +1,1 @@
-  The SPEL CHECKER is a powerfol tool that finds and fixis misspelled words in any text document you give it. It uses smat tekniques like 
-hash tables or trie to store and search through wodrs quickly. This means it can check your document's spelling mistakes fat.
-
-    How doss our Spell checker?  Our spell checker program works from text fiel. It takes words one by one from the input file and 
-highlight the misspelled word and give suggestion for the misspelled word. User haev to enter the coresponding number to correct word from
-the suggestion list to chang the highlighted word. if user doesn’t want to change the highlighted word then enter 0 to scip that word. If
-user doesn’t found correct word in suggestion list then enter –1 for more suggestions then repeat the same proces as mentioned above until
-you find the correct word for the misspelled word. Do the sama process with all highlighted words. User can check the
-output in output file.
+!! We aer tceh titens. !!
