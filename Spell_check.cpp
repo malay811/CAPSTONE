@@ -3,19 +3,13 @@
 #include<vector>
 #include<sstream>
 #include<cstring>
-#include<windows.h>
 
-#include "Trie.cpp"
 #include "file_handling.cpp"
 
-HANDLE h=GetStdHandle(STD_OUTPUT_HANDLE);
-#define red SetConsoleTextAttribute(h,4);
-#define white SetConsoleTextAttribute(h,7);
 #define yellow SetConsoleTextAttribute(h,6);
 #define blue SetConsoleTextAttribute(h,1);
 #define green SetConsoleTextAttribute(h,2);
 #define cyan SetConsoleTextAttribute(h,11);
-
 using namespace std ;
 
 // this is a helper function for spelling check function 
