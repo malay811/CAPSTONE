@@ -1,5 +1,6 @@
   The SPELL CHECKER is a powerful tool that finds and fixes misspelled words in any text document you give it. It uses smart techniques like 
 hash tables or trie to store and search through words quickly. This means it can check your document's spelling mistakes fast.
+
   How does our spell checker works? Our spell checker program works for text file. It takes the words one by one from the input file and 
 highlight the misspelled word and gives the suggestions for the misspelled word. User have to enter the corresponding number to correct word from 
 the suggestion list to change the highlighted word. if user doesn’t want to change the highlighted word then enter 0 to skip that word. If
