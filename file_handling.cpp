@@ -1,5 +1,6 @@
 #include <iostream>
 #include<fstream>// for file-handling
+#include<sstream> // for string stream
 #include<string>// for string
 
 #include"Trie.cpp"
