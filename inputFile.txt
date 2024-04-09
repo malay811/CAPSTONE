@@ -1,0 +1,13 @@
+        The "SPEL CHEKAR" is a powarfull tual!! that finds and fixees mispeled words in any text docyument you give it. It uses smart 
+technikes like hash tables or trie to storre and serch through words qikliy. This means it can check your document's spelling 
+mitakas fast.
+
+
+Jow does our 'spel ceckar' wokrs?
+
+    Our spel chekar progremm works for text fole. It tekas the words one by one from the input file nemed "inputFile.txt" and highight
+the mispeled word and givas the sujestions for the misspelled word. User have to enter the corrospoanding number to correct word from
+the sujesation liist to chainge the highliaghted word. if user doesn't want to chenge the highlighted word then enter 0 to scip that 
+word. If user doesn't find correct word in suggestion list then enter -1 for more suggestions then repeat the samee process as mantiened
+abuve untill you find the carrect word for the misspelled word. Do the same proccess with all highlighted words.
+(User cen chaik the otput in "outputFile.txt" file...)
